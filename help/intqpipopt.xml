@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+ *
+ * This help file was generated from intqpipopt.sci using help_from_sci().
+ *
+ -->
+
+<refentry version="5.0-subset Scilab" xml:id="intqpipopt" xml:lang="en"
+          xmlns="http://docbook.org/ns/docbook"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns:ns3="http://www.w3.org/1999/xhtml"
+          xmlns:mml="http://www.w3.org/1998/Math/MathML"
+          xmlns:scilab="http://www.scilab.org"
+          xmlns:db="http://docbook.org/ns/docbook">
+
+  <refnamediv>
+    <refname>intqpipopt</refname>
+    <refpurpose>Solves a linear quadratic problem.</refpurpose>
+  </refnamediv>
+
+
+<refsynopsisdiv>
+   <title>Calling Sequence</title>
+   <synopsis>
+   xopt = intqpipopt(H,f)
+   xopt = intqpipopt(H,f,intcon)
+   xopt = intqpipopt(H,f,intcon,A,b)
+   xopt = intqpipopt(H,f,intcon,A,b,Aeq,beq)
+   xopt = intqpipopt(H,f,intcon,A,b,Aeq,beq,lb,ub)
+   xopt = intqpipopt(H,f,intcon,A,b,Aeq,beq,lb,ub,x0)
+   xopt = intqpipopt(H,f,intcon,A,b,Aeq,beq,lb,ub,x0,"path/to/bonmin_options_file")
+   [xopt,fopt,exitflag,output] = intqpipopt( ... )
+   
+   </synopsis>
+</refsynopsisdiv>
+
+<refsection>
+   <title>Parameters</title>
+   <variablelist>
+   <varlistentry><term>H :</term>
+      <listitem><para> a symmetric matrix of double, represents coefficients of quadratic in the quadratic problem.</para></listitem></varlistentry>
+   <varlistentry><term>f :</term>
+      <listitem><para> a vector of double, represents coefficients of linear in the quadratic problem</para></listitem></varlistentry>
+   <varlistentry><term>intcon :</term>
+      <listitem><para> a vector of integers, represents which variables are constrained to be integers</para></listitem></varlistentry>
+   <varlistentry><term>A :</term>
+      <listitem><para> a matrix of double, represents the linear coefficients in the inequality constraints A⋅x ≤ b.</para></listitem></varlistentry>
+   <varlistentry><term>b :</term>
+      <listitem><para> a vector of double, represents the linear coefficients in the inequality constraints A⋅x ≤ b.</para></listitem></varlistentry>
+   <varlistentry><term>Aeq :</term>
+      <listitem><para> a matrix of double, represents the linear coefficients in the equality constraints Aeq⋅x = beq.</para></listitem></varlistentry>
+   <varlistentry><term>beq :</term>
+      <listitem><para> a vector of double, represents the linear coefficients in the equality constraints Aeq⋅x = beq.</para></listitem></varlistentry>
+   <varlistentry><term>lb :</term>
+      <listitem><para> a vector of double, contains lower bounds of the variables.</para></listitem></varlistentry>
+   <varlistentry><term>ub :</term>
+      <listitem><para> a vector of double, contains upper bounds of the variables.</para></listitem></varlistentry>
+   <varlistentry><term>x0 :</term>
+      <listitem><para> a vector of double, contains initial guess of variables.</para></listitem></varlistentry>
+   <varlistentry><term>param :</term>
+      <listitem><para> a list containing the parameters to be set.</para></listitem></varlistentry>
+   <varlistentry><term>xopt :</term>
+      <listitem><para> a vector of double, the computed solution of the optimization problem.</para></listitem></varlistentry>
+   <varlistentry><term>fopt :</term>
+      <listitem><para> a double, the value of the function at x.</para></listitem></varlistentry>
+   <varlistentry><term>exitflag :</term>
+      <listitem><para> The exit status. See below for details.</para></listitem></varlistentry>
+   <varlistentry><term>output :</term>
+      <listitem><para> The structure consist of statistics about the optimization. See below for details.</para></listitem></varlistentry>
+   </variablelist>
+</refsection>
+
+<refsection>
+   <title>Description</title>
+   <para>
+Search the minimum of a constrained linear quadratic optimization problem specified by :
+   </para>
+   <para>
+<latex>
+\begin{eqnarray}
+&amp;\mbox{min}_{x}
+&amp; 1/2⋅x^T⋅H⋅x + f^T⋅x  \\
+&amp; \text{subject to} &amp; A⋅x \leq b \\
+&amp; &amp; Aeq⋅x = beq \\
+&amp; &amp; lb \leq x \leq ub \\
+&amp; &amp; x_i \in \!\, \mathbb{Z}, i \in \!\, intcon\\
+\end{eqnarray}
+</latex>
+   </para>
+   <para>
+The routine calls Bonmin for solving the quadratic problem, Bonmin is a library written in C++.
+   </para>
+   <para>
+The exitflag allows to know the status of the optimization which is given back by Bonmin.
+<itemizedlist>
+<listitem>exitflag=0 : Optimal Solution Found </listitem>
+<listitem>exitflag=1 : Maximum Number of Iterations Exceeded. Output may not be optimal.</listitem>
+<listitem>exitflag=2 : Maximum CPU Time exceeded. Output may not be optimal.</listitem>
+<listitem>exitflag=3 : Stop at Tiny Step.</listitem>
+<listitem>exitflag=4 : Solved To Acceptable Level.</listitem>
+<listitem>exitflag=5 : Converged to a point of local infeasibility.</listitem>
+</itemizedlist>
+   </para>
+   <para>
+For more details on exitflag see the Bonmin page, go to http://www.coin-or.org/Bonmin
+   </para>
+   <para>
+The output data structure contains detailed informations about the optimization process.
+It has type "struct" and contains the following fields.
+<itemizedlist>
+<listitem>output.constrviolation: The max-norm of the constraint violation.</listitem>
+</itemizedlist>
+   </para>
+   <para>
+   </para>
+   <para>
+</para>
+</refsection>
+
+<refsection>
+   <title>Examples</title>
+   <programlisting role="example"><![CDATA[
+   ]]></programlisting>
+</refsection>
+</refentry>
